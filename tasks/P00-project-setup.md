@@ -1,6 +1,6 @@
 ---
 id: P00
-status: in_progress
+status: passed
 depends_on: []
 ---
 
