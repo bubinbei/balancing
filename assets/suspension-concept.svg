@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="960" viewBox="0 0 1200 960" role="img" aria-labelledby="title description">
+  <title id="title">Кинематическая схема подвесной люльки коленвала без блока</title>
+  <desc id="description">Вид сбоку и с приводного торца. Коленвал, шкив и маховик опираются на два полных металлических узла в жёсткой деревянной люльке. Два подвеса крепятся выше центра масс всей подвижной сборки. Датчики стоят на металлических узлах. Крен и поворот люльки измеряются. Крепления, ограждение и размеры требуют отдельного проектирования.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse">
+      <path d="M0 0L8 4L0 8Z" fill="#263340"/>
+    </marker>
+    <marker id="motion-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse">
+      <path d="M0 0L8 4L0 8Z" fill="#157b9c"/>
+    </marker>
+    <pattern id="wood" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(20)">
+      <rect width="20" height="20" fill="#ead2aa"/>
+      <path d="M0 0V20" stroke="#b7905c" stroke-width="1"/>
+    </pattern>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #263340; }
+      .title { font-size: 25px; font-weight: 700; }
+      .heading { font-size: 20px; font-weight: 700; }
+      .label { font-size: 17px; }
+      .small { font-size: 15px; }
+      .wood { fill: url(#wood); stroke: #795b35; stroke-width: 2; }
+      .metal { fill: #ccd4dc; stroke: #445463; stroke-width: 2; }
+      .sensor { fill: #147c9c; stroke: #0d5267; stroke-width: 1.5; }
+      .line { fill: none; stroke: #263340; stroke-width: 2; }
+      .motion { fill: none; stroke: #157b9c; stroke-width: 3; }
+      .guide { fill: none; stroke: #7b8792; stroke-width: 1.5; stroke-dasharray: 6 5; }
+      .anchor { fill: #ffffff; stroke: #263340; stroke-width: 3; }
+    </style>
+  </defs>
+  <rect width="1200" height="960" fill="#ffffff"/>
+  <text x="40" y="38" class="title">Подвесная люлька: коленвал без блока цилиндров</text>
+  <text x="40" y="67" class="small">Предварительная кинематика. Движения условно увеличены; размеры и прочность соединений не заданы.</text>
+
+  <text x="40" y="105" class="heading">Вид сбоку — ось вала X</text>
+  <rect x="150" y="125" width="900" height="22" class="wood"/>
+  <text x="440" y="117" class="label">Несущая балка / рама: требуется проверка</text>
+  <path d="M320 147V225M880 147V225" stroke="#263340" stroke-width="4"/>
+  <text x="60" y="187" class="label">Подвес A</text>
+  <path d="M165 183H305" class="line"/>
+  <text x="962" y="187" class="label">Подвес B</text>
+  <path d="M951 183H895" class="line"/>
+  <path d="M320 225H880" class="guide"/>
+  <text x="430" y="213" class="small">Линия нижних точек подвеса</text>
+
+  <rect x="305" y="225" width="30" height="205" class="wood"/>
+  <rect x="865" y="225" width="30" height="205" class="wood"/>
+  <rect x="235" y="430" width="730" height="28" class="wood"/>
+  <circle cx="320" cy="225" r="7" class="anchor"/>
+  <circle cx="880" cy="225" r="7" class="anchor"/>
+  <path d="M315 405L260 432M885 405L940 432" class="line"/>
+
+  <rect x="365" y="313" width="58" height="117" class="metal"/>
+  <rect x="775" y="313" width="58" height="117" class="metal"/>
+  <path d="M166 340H430V364H470V315H510V340H565V364H605V315H645V340H700V364H740V340H1030"
+        fill="none" stroke="#50606e" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="195" cy="340" rx="12" ry="38" class="metal"/>
+  <ellipse cx="994" cy="340" rx="19" ry="82" class="metal"/>
+  <rect x="365" y="296" width="25" height="15" class="sensor"/>
+  <rect x="395" y="296" width="25" height="15" class="sensor"/>
+  <rect x="775" y="296" width="25" height="15" class="sensor"/>
+  <rect x="805" y="296" width="25" height="15" class="sensor"/>
+
+  <text x="45" y="280" class="label">Приводной конец A</text>
+  <path d="M162 286L192 301" class="line"/>
+  <text x="1044" y="313" class="label">Маховик</text>
+  <path d="M1033 319H1017" class="line"/>
+  <text x="500" y="286" class="label">Коленвал</text>
+  <path d="M555 292L573 323" class="line"/>
+  <text x="48" y="390" class="label">Полный металлический</text>
+  <text x="48" y="412" class="label">опорный узел A</text>
+  <path d="M235 397H350" class="line"/>
+  <text x="965" y="421" class="label">Узел B</text>
+  <path d="M951 417L841 392" class="line"/>
+  <text x="350" y="271" class="small">BMI160 + LIS3DH</text>
+  <text x="758" y="271" class="small">BMI160 + LIS3DH</text>
+
+  <circle cx="602" cy="400" r="9" fill="#ffffff" stroke="#c35b25" stroke-width="3"/>
+  <path d="M588 400H616M602 386V414" stroke="#c35b25" stroke-width="2"/>
+  <text x="637" y="402" class="label">ЦМ всей подвижной сборки</text>
+  <text x="637" y="423" class="small">ниже линии подвеса; положение измерить</text>
+  <path d="M320 480H880" class="line" marker-end="url(#arrow)"/>
+  <text x="591" y="502" class="label">+X</text>
+  <text x="240" y="480" class="small">A</text>
+  <text x="915" y="480" class="small">B</text>
+
+  <path d="M40 529H1160" stroke="#d6dce1" stroke-width="1"/>
+  <text x="40" y="563" class="heading">С торца A: положение центра масс и крен</text>
+  <rect x="145" y="586" width="370" height="18" class="wood"/>
+  <path d="M330 604V660" stroke="#263340" stroke-width="4"/>
+  <rect x="160" y="660" width="340" height="20" class="wood"/>
+  <rect x="160" y="680" width="23" height="167" class="wood"/>
+  <rect x="477" y="680" width="23" height="167" class="wood"/>
+  <rect x="160" y="847" width="340" height="22" class="wood"/>
+  <circle cx="330" cy="660" r="7" class="anchor"/>
+  <path d="M190 660H470" class="guide"/>
+  <rect x="289" y="742" width="82" height="105" class="metal"/>
+  <circle cx="330" cy="761" r="29" class="metal"/>
+  <circle cx="330" cy="761" r="12" fill="#50606e"/>
+  <rect x="290" y="725" width="25" height="15" class="sensor"/>
+  <rect x="345" y="725" width="25" height="15" class="sensor"/>
+  <circle cx="330" cy="816" r="8" fill="#ffffff" stroke="#c35b25" stroke-width="3"/>
+  <path d="M317 816H343M330 803V829" stroke="#c35b25" stroke-width="2"/>
+  <text x="388" y="818" class="small">ЦМ</text>
+  <path d="M300 623A48 48 0 0 1 375 677" class="motion" marker-end="url(#motion-arrow)"/>
+  <path d="M330 660L300 623" class="guide"/>
+  <text x="52" y="630" class="label">Крен</text>
+  <path d="M111 625H284" class="line"/>
+  <path d="M215 899H130" class="line" marker-end="url(#arrow)"/>
+  <text x="90" y="905" class="label">+Y</text>
+  <path d="M550 849V765" class="line" marker-end="url(#arrow)"/>
+  <text x="541" y="750" class="label">+Z</text>
+  <text x="262" y="902" class="small">+X от наблюдателя</text>
+
+  <text x="650" y="603" class="heading">Планируемые измерения</text>
+  <text x="650" y="637" class="label">• Ускорения в трёх осях на каждом конце</text>
+  <text x="650" y="666" class="label">• Угловые скорости люльки</text>
+  <text x="650" y="695" class="label">• События угловых меток ротора</text>
+  <text x="650" y="739" class="heading">В плане: поворот вокруг вертикали Z</text>
+  <rect x="710" y="779" width="340" height="58" fill="none" stroke="#a5adb5" stroke-width="2" stroke-dasharray="5 5"/>
+  <g transform="rotate(-6 880 808)">
+    <rect x="710" y="779" width="340" height="58" class="wood"/>
+    <path d="M740 808H1020" stroke="#50606e" stroke-width="6"/>
+    <circle cx="750" cy="808" r="6" class="anchor"/>
+    <circle cx="1010" cy="808" r="6" class="anchor"/>
+  </g>
+  <path d="M1065 818Q1080 786 1053 762" class="motion" marker-end="url(#motion-arrow)"/>
+  <text x="737" y="876" class="small">Подвес A</text>
+  <text x="965" y="876" class="small">Подвес B</text>
+
+  <text x="40" y="940" class="small">Ограждение, привод, смазка, осевое удержание и страховочные ловители не показаны; их проверка обязательна до вращения.</text>
+</svg>

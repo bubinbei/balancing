@@ -1,0 +1,17 @@
+{
+  "template_only": true,
+  "schema_version": 1,
+  "session_uuid": null,
+  "data_kind": null,
+  "started_utc": null,
+  "firmware_commit": null,
+  "host_commit": null,
+  "configuration_sha256": null,
+  "mechanical_configuration_id": null,
+  "sensor_mount_revision": null,
+  "time_epoch": null,
+  "raw_files": [],
+  "trial_weights": [],
+  "loss_summary": null,
+  "run_status": "not_run"
+}

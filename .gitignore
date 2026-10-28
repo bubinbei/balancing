@@ -1,0 +1,25 @@
+# Private/local acquisition and machine state
+data/runs/*
+!data/runs/.gitkeep
+evidence/local/*
+!evidence/local/.gitkeep
+.obsidian/workspace*.json
+.obsidian/cache/
+.obsidian/plugins/
+.obsidian/hotkeys.json
+.trash/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+build/
+dist/
+.west/
+.env
+.env.*
+*.pem
+*.key
+*.token
+*.log
+.DS_Store
+Thumbs.db
