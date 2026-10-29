@@ -151,8 +151,11 @@ def harmonic_fit(times_s, values, phase, *, quality=None, delays_s=0.0, trend=Tr
                    (times[:, None] - delays <= phase.times[-1]), axis=1)
     times, values = times[valid], values[valid]
     require(len(times) >= 16, "not enough samples with bracketed phase")
-    angles = phase.evaluate(times)
-    turns = abs(float(angles[-1] - angles[0])) / (2 * np.pi)
+    # Only effective sample times are bracketed; a delayed DRDY may occur
+    # after the last index even though its measurement belongs inside it.
+    spans = [abs(float(np.diff(phase.evaluate([times[0] - d, times[-1] - d]))[0]))
+             for d in delays]
+    turns = min(spans) / (2 * np.pi)
     require(turns >= 2, "window spans fewer than two revolutions")
     inverses, coefficients, residuals = [], [], []
     for column, delay in enumerate(delays):
@@ -178,23 +181,36 @@ def harmonic_fit(times_s, values, phase, *, quality=None, delays_s=0.0, trend=Tr
                     np.sqrt(np.mean(residual * residual, axis=0)), len(times), turns)
 
 
-def synchronous_average(times_s, values, phase, *, points=256):
+def synchronous_average(times_s, values, phase, *, points=256, delays_s=0.0):
     times = increasing(times_s, "sample timestamps")
     values = array(values)
-    require(values.shape[0] == len(times) and 16 <= points <= 4096, "invalid synchronous average")
-    angle = phase.evaluate(times) * phase.direction
-    first = int(np.ceil(angle[0] / (2 * np.pi)))
-    last = int(np.floor(angle[-1] / (2 * np.pi)))
+    require(values.ndim in (1, 2) and values.shape[0] == len(times)
+            and type(points) is int and 16 <= points <= 4096, "invalid synchronous average")
+    single = values.ndim == 1
+    if single:
+        values = values[:, None]
+    require(delays_s is not None, "unknown sensor/filter delay")
+    delays = np.broadcast_to(array(delays_s), (values.shape[1],))
+    require(np.all(delays >= 0), "negative sensor delay")
+    effective = times[:, None] - delays
+    valid = np.all((effective >= phase.times[0]) & (effective <= phase.times[-1]), axis=1)
+    effective, values = effective[valid], values[valid]
+    require(len(effective) >= 16, "not enough samples with bracketed phase")
+    angle = phase.evaluate(effective) * phase.direction
+    # Use the same complete revolutions for every channel, with its own delay.
+    first = int(np.ceil(np.max(angle[0]) / (2 * np.pi)))
+    last = int(np.floor(np.min(angle[-1]) / (2 * np.pi)))
     require(last - first >= 2, "not enough complete revolutions")
     grid = np.arange(points) * 2 * np.pi / points
     matrix = []
     for turn in range(first, last):
         target = turn * 2 * np.pi + grid
-        if values.ndim == 1:
-            matrix.append(np.interp(target, angle, values))
-        else:
-            matrix.append(np.column_stack([np.interp(target, angle, values[:, c]) for c in range(values.shape[1])]))
-    return grid * phase.direction, np.mean(matrix, axis=0), np.asarray(matrix)
+        matrix.append(np.column_stack([np.interp(target, angle[:, c], values[:, c])
+                                       for c in range(values.shape[1])]))
+    matrix = np.asarray(matrix)
+    if single:
+        matrix = matrix[:, :, 0]
+    return grid * phase.direction, np.mean(matrix, axis=0), matrix
 
 
 def fft_spectrum(times_s, values):
@@ -226,7 +242,8 @@ def rigid_body_acceleration(origin_acceleration, angular_velocity, angular_accel
 def influence_matrix(baseline, trial_a, trial_b, u_a_gmm, u_b_gmm):
     baseline = np.asarray(baseline, dtype=complex)
     require(baseline.ndim == 1 and len(baseline) >= 2, "at least two response channels required")
-    require(abs(u_a_gmm) > 0 and abs(u_b_gmm) > 0, "zero trial unbalance")
+    require(all(np.ndim(u) == 0 and np.isfinite(u) and abs(u) > 0 for u in (u_a_gmm, u_b_gmm)),
+            "trial unbalance must be finite and nonzero")
     a, b = np.asarray(trial_a, dtype=complex), np.asarray(trial_b, dtype=complex)
     require(a.shape == baseline.shape == b.shape, "trial response shapes differ")
     result = np.column_stack([(a - baseline) / u_a_gmm, (b - baseline) / u_b_gmm])
@@ -249,12 +266,18 @@ def solve_correction(matrix, response, covariance_real, *, reference_gmm=(100, 1
     response = np.asarray(response, dtype=complex)
     require(response.shape == (matrix.shape[0],) and np.all(np.isfinite(response)), "invalid response")
     covariance = array(covariance_real, ndim=2)
-    require(covariance.shape == (len(model), len(model)) and np.allclose(covariance, covariance.T),
-            "invalid covariance dimensions/symmetry")
-    eigenvalues, vectors = linalg.eigh(covariance)
+    require(covariance.shape == (len(model), len(model)), "invalid covariance dimensions")
+    require(np.all(np.diag(covariance) > 0), "noise variances must be positive")
+    noise_std = np.sqrt(np.diag(covariance))
+    correlation = covariance / np.outer(noise_std, noise_std)
+    require(np.allclose(correlation, correlation.T, rtol=1e-10, atol=1e-12),
+            "invalid covariance symmetry")
+    # Check redundancy in dimensionless coordinates, not against the arbitrary
+    # unit ratio between accelerometers and gyroscopes.
+    eigenvalues, vectors = linalg.eigh(correlation)
     require(eigenvalues[0] > 0 and eigenvalues[0] > eigenvalues[-1] * 1e-14,
             "singular noise covariance; remove redundant channels or explicitly validate regularization")
-    whitening = (vectors / np.sqrt(eigenvalues)).T
+    whitening = (vectors / np.sqrt(eigenvalues)).T / noise_std
     refs = array(reference_gmm, ndim=1)
     require(refs.shape == (2,) and np.all(refs > 0), "invalid reference unbalance")
     scale = np.diag(np.repeat(refs, 2))

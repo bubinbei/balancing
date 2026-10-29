@@ -50,6 +50,11 @@ def analyze_capture(path, *, sensor_id=0, max_samples=2000000):
     sensor = next(s for s in config["sensors"] if s["id"] == sensor_id)
     require(len(indices) >= 3, "at least three revolution indices required")
     phase_config = {p["id"]: p for p in config["phase_inputs"]}
+    require(1 in phase_config and phase_config[1]["ppr"] == 1, "one index per revolution required")
+    require(0 not in phase_config or teeth, "configured tooth input has no events")
+    if teeth:
+        require(phase_config[0]["rotation_sign"] == phase_config[1]["rotation_sign"],
+                "phase inputs disagree on rotation direction")
     direction = phase_config[1]["rotation_sign"]
     zero = phase_config[1]["zero_angle_udeg"] * np.pi / 180000000
     index_times = [r["timestamp_us"] / 1000000 for r in indices]
@@ -81,13 +86,15 @@ def analyze_capture(path, *, sensor_id=0, max_samples=2000000):
     valid = (times >= phase.times[0]) & (times <= phase.times[-1])
     rpm = np.abs(phase.evaluate(times[valid], 1)) * 60 / (2 * np.pi)
     stationary = float(np.std(rpm) / np.mean(rpm)) <= 0.01
-    grid, average, turns = synchronous_average(times[valid], values[valid], phase)
+    grid, average, turns = synchronous_average(times, values, phase, delays_s=np.array(delays) / 1000000)
     result = dict(data_kind="synthetic" if config["simulated"] else "physical_unverified",
                   source_id=sensor_id, channels=channels, raw_sha256=check["sha256"],
                   session_uuid=next(iter(keys))[0], config_revision=next(iter(keys))[1], time_epoch=next(iter(keys))[2],
                   phase_method=phase.method, rotation_sign_assumed=direction, rpm_mean=float(np.mean(rpm)),
                   rpm_relative_std=float(np.std(rpm) / np.mean(rpm)), stationary=stationary,
                   harmonic=estimate.as_dict(), synchronous_turns=len(turns),
+                  filter_delays_s=(np.array(delays) / 1000000).tolist(),
+                  synchronous_delay_compensated=True,
                   synchronous_angle_rad=grid.tolist(), synchronous_mean=average.tolist(),
                   interpretation="sensor mounting motion, not absolute crank angle or mass distribution")
     if stationary:

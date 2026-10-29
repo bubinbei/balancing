@@ -12,7 +12,51 @@
       "overflow": false,
       "counterweights": 8,
       "removal_plan_matches_python": true,
-      "zero_mark": true
+      "zero_mark": true,
+      "depth_occlusion": {
+        "near": [
+          [
+            0,
+            255,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0,
+            255
+          ]
+        ],
+        "far": [
+          [
+            255,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ]
+        ],
+        "hidden": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "visible": [
+          209,
+          0,
+          46,
+          255
+        ]
+      },
+      "renderer": "webgl-depth",
+      "translucent_cradle": true
     },
     {
       "width": 1280,
@@ -24,7 +68,51 @@
       "overflow": false,
       "counterweights": 8,
       "removal_plan_matches_python": true,
-      "zero_mark": true
+      "zero_mark": true,
+      "depth_occlusion": {
+        "near": [
+          [
+            0,
+            255,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0,
+            255
+          ]
+        ],
+        "far": [
+          [
+            255,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ]
+        ],
+        "hidden": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "visible": [
+          209,
+          0,
+          46,
+          255
+        ]
+      },
+      "renderer": "webgl-depth",
+      "translucent_cradle": true
     },
     {
       "width": 360,
@@ -36,7 +124,51 @@
       "overflow": false,
       "counterweights": 8,
       "removal_plan_matches_python": true,
-      "zero_mark": true
+      "zero_mark": true,
+      "depth_occlusion": {
+        "near": [
+          [
+            0,
+            255,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0,
+            255
+          ]
+        ],
+        "far": [
+          [
+            255,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ]
+        ],
+        "hidden": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "visible": [
+          209,
+          0,
+          46,
+          255
+        ]
+      },
+      "renderer": "webgl-depth",
+      "translucent_cradle": true
     },
     {
       "width": 320,
@@ -48,8 +180,53 @@
       "overflow": false,
       "counterweights": 8,
       "removal_plan_matches_python": true,
-      "zero_mark": true
+      "zero_mark": true,
+      "depth_occlusion": {
+        "near": [
+          [
+            0,
+            255,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0,
+            255
+          ]
+        ],
+        "far": [
+          [
+            255,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ]
+        ],
+        "hidden": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "visible": [
+          209,
+          0,
+          46,
+          255
+        ]
+      },
+      "renderer": "webgl-depth",
+      "translucent_cradle": true
     }
   ],
-  "finite_playback": true
+  "finite_playback": true,
+  "numerical_results_without_webgl": true
 }

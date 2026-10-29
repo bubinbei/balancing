@@ -1,6 +1,7 @@
 import tempfile
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 from scipy import stats
@@ -11,10 +12,66 @@ from balancing_host.analysis import (fft_spectrum, harmonic_fit, influence_matri
 from balancing_host.capture_analysis import analyze_capture
 from balancing_host.protocol import ProtocolError
 from balancing_host.recording import Recorder
-from balancing_host.synthetic import stream
+from balancing_host.synthetic import stream, synthetic_config
 
 
 class SignalTests(unittest.TestCase):
+    def test_delay_brackets_measurement_not_drdy_and_angular_mean_agrees(self):
+        phase = phase_from_index(np.arange(11) / 10, list(range(11)))
+        times = np.arange(0.01, 1.01, 0.001)
+        values = np.cos(2 * np.pi * 10 * (times - .01) + .4)
+        harmonic = harmonic_fit(times, values, phase, delays_s=.01)
+        np.testing.assert_allclose(harmonic.coefficient, [np.exp(.4j)], atol=1e-12)
+        angle, mean, _ = synchronous_average(times, values, phase, delays_s=.01)
+        measured = 2 * np.mean(mean * np.exp(-1j * angle))
+        self.assertLess(abs(measured - np.exp(.4j)), .0004)
+
+    def test_different_channel_delays_and_reverse_angular_average(self):
+        times = np.arange(0, 3, .0005)
+        delays = np.array([.003, .012])
+        expected = np.array([np.exp(.6j), 2 * np.exp(-.8j)])
+        phase = phase_from_index(np.arange(31) / 10, list(range(31)), direction=-1,
+                                 zero_angle_rad=.2)
+        theta = .2 - 2 * np.pi * 10 * (times[:, None] - delays)
+        values = (np.exp(1j * theta) * expected).real
+        angle, mean, _ = synchronous_average(times, values, phase, delays_s=delays)
+        measured = 2 * np.mean(mean * np.exp(-1j * angle[:, None]), axis=0)
+        np.testing.assert_allclose(measured, expected, atol=.0003)
+
+    def test_capture_delay_applied_to_harmonic_and_synchronous_output(self):
+        config = synthetic_config()
+        config['sensors'][0]['filter_delay_us'] = dict(accel=10000, gyro=5000)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / 'capture'
+            with patch('balancing_host.synthetic.synthetic_config', return_value=config):
+                with Recorder(directory, 'synthetic') as recorder:
+                    for data in stream(1):
+                        list(recorder.append(data))
+            result = analyze_capture(directory)
+            angle = np.array(result['synchronous_angle_rad'])
+            mean = np.array(result['synchronous_mean'])
+            averaged = 2 * np.mean(mean * np.exp(-1j * angle[:, None]), axis=0)
+            fitted = np.array(result['harmonic']['real']) + 1j * np.array(result['harmonic']['imag'])
+            # The existing fixture has undelayed values. Adding delay metadata
+            # must advance both reported phases by the same known omega*delay.
+            expected_phase = .35 + 2 * np.pi * 10 * .01
+            self.assertAlmostEqual(np.angle(fitted[0]), expected_phase, delta=.001)
+            np.testing.assert_allclose(averaged, fitted, atol=.0001)
+            self.assertTrue(result['synchronous_delay_compensated'])
+
+    def test_inconsistent_capture_phase_configuration_refused(self):
+        for field, value, expected in [('ppr', 2, 'one index'), ('rotation_sign', -1, 'disagree')]:
+            config = synthetic_config()
+            config['phase_inputs'][1][field] = value
+            with tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary) / 'capture'
+                with patch('balancing_host.synthetic.synthetic_config', return_value=config):
+                    with Recorder(directory, 'synthetic') as recorder:
+                        for data in stream(.5):
+                            list(recorder.append(data))
+                with self.assertRaisesRegex(ProtocolError, expected):
+                    analyze_capture(directory)
+
     def test_known_amplitude_phase_offset_trend_and_delay(self):
         time = np.arange(0, 3, 1 / 1344)
         indices = np.arange(0, 3.1, 0.1)
@@ -128,7 +185,7 @@ class BalanceTests(unittest.TestCase):
         np.testing.assert_allclose(real_matrix(self.H) @ u, np.r_[self.V.real, self.V.imag])
 
     def test_units_do_not_change_result(self):
-        scale = np.array([1000, 0.001, 2, 100])
+        scale = np.array([1e6, 1e-6, 2, 100])
         noise_scale = np.diag(np.r_[scale, scale])
         first = solve_correction(self.H, self.V, self.C)
         second = solve_correction(self.H * scale[:, None], self.V * scale,
@@ -136,6 +193,15 @@ class BalanceTests(unittest.TestCase):
         np.testing.assert_allclose(first["correction_real"], second["correction_real"], atol=1e-6)
         # Exact zero cross terms can differ by floating-point roundoff after SVD.
         np.testing.assert_allclose(first["covariance_real"], second["covariance_real"], rtol=1e-6, atol=1e-12)
+
+    def test_invalid_small_covariance_and_trial_input_refused(self):
+        covariance = np.eye(8) * 1e-12
+        covariance[0, 1] = 1e-9  # Absolute allclose tolerance must not hide this.
+        with self.assertRaisesRegex(ProtocolError, 'symmetry'):
+            solve_correction(self.H, self.V, covariance)
+        for invalid in (0, np.inf, np.nan, complex(1, np.inf)):
+            with self.assertRaises(ProtocolError):
+                influence_matrix(self.V, self.V + 1, self.V + 2, invalid, 100)
 
     def test_unobservable_or_redundant_models_refused(self):
         with self.assertRaises(ProtocolError):

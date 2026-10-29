@@ -26,6 +26,28 @@ def main():
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.goto(args.url)
             page.wait_for_function("() => document.getElementById('app').dataset.ready === 'true'")
+            assert page.locator('#model').get_attribute('data-renderer') == 'webgl-depth'
+            assert page.locator('#model').get_attribute('data-cradle-opacity') == '0.18'
+            # Crossing geometry: the near part of a long tilted shaft must
+            # cover a block, its far part must be hidden, in either draw order.
+            depth_check = page.evaluate("""() => {
+              const layer=createDepthLayer(), flat=(z,color)=>({points:[[10,20,z],[190,20,z],[190,180,z],[10,180,z]],color});
+              const shaft={points:[[0,80,1],[200,80,4],[200,120,4],[0,120,1]],color:[0,1,0,1]};
+              const block=flat(2,[1,0,0,1]), sample=(polys,x)=>{
+                const out=document.createElement('canvas');out.width=200;out.height=200;
+                const c=out.getContext('2d');c.drawImage(layer.render(polys,200,200,1),0,0);
+                return Array.from(c.getImageData(x,100,1,1).data);
+              };
+              const orders=[[shaft,block],[block,shaft]];
+              const near=orders.map(p=>sample(p,40)),far=orders.map(p=>sample(p,180));
+              const hidden=sample([shaft,block,flat(5,[0,0,1,.18])],180);
+              const visible=sample([shaft,block,flat(.8,[0,0,1,.18])],180);
+              return {near,far,hidden,visible};
+            }""")
+            assert all(v[1] > 250 and v[0] < 3 for v in depth_check['near']), depth_check
+            assert all(v[0] > 250 and v[1] < 3 for v in depth_check['far']), depth_check
+            assert depth_check['hidden'][:3] == [255, 0, 0], depth_check
+            assert 195 < depth_check['visible'][0] < 220 and 35 < depth_check['visible'][2] < 60, depth_check
             expected = page.request.get(args.url + "api/demo").json()
             assert not expected["hardware_connected"] and expected["data_kind"] == "synthetic"
             for case in expected["scenarios"]:
@@ -78,7 +100,19 @@ def main():
             page.screenshot(path=str(args.output / f"demo-{width}-{scheme}.png"), full_page=True)
             reports.append(dict(width=width, scheme=scheme, fixed_string_length_error_m=error,
                                 scenarios=3, stages=2, values_match_python=True, overflow=False,
-                                counterweights=8, removal_plan_matches_python=True, zero_mark=True))
+                                counterweights=8, removal_plan_matches_python=True, zero_mark=True,
+                                depth_occlusion=depth_check, renderer='webgl-depth', translucent_cradle=True))
+            if width == 1280:
+                page.click('#zero')
+                page.locator('#model').screenshot(path=str(args.output / f'model-zero-{scheme}.png'))
+                page.click('#play')
+                page.locator('#model').screenshot(path=str(args.output / f'model-phase-{scheme}.png'))
+                bounds = page.locator('#model').bounding_box()
+                page.mouse.move(bounds['x'] + bounds['width'] / 2, bounds['y'] + 220)
+                page.mouse.down()
+                page.mouse.move(bounds['x'] + bounds['width'] / 2 + 170, bounds['y'] + 240, steps=8)
+                page.mouse.up()
+                page.locator('#model').screenshot(path=str(args.output / f'model-rotated-{scheme}.png'))
             context.close()
         # Real-time playback stops by itself and supports a manual pause.
         context = browser.new_context(viewport={"width": 1280, "height": 1100})
@@ -93,9 +127,24 @@ def main():
         page.click("#play")
         assert page.locator("#play").inner_text() == "Показать движение"
         context.close()
+        context = browser.new_context(viewport={"width": 1280, "height": 1100})
+        context.add_init_script("""const original=HTMLCanvasElement.prototype.getContext;
+          HTMLCanvasElement.prototype.getContext=function(type,...args){
+            return type==='webgl'?null:original.call(this,type,...args);
+          };""")
+        page = context.new_page()
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        page.goto(args.url)
+        page.wait_for_function("() => document.getElementById('app').dataset.ready === 'true'")
+        assert page.locator('#model').get_attribute('data-renderer') == 'unavailable'
+        assert 'г' in page.locator('#mass-a').inner_text()
+        page.click('#after')
+        assert page.locator('#app').get_attribute('data-stage') == 'after'
+        context.close()
         browser.close()
     assert not errors, errors
-    result = dict(ok=True, browser_errors=errors, layouts=reports, finite_playback=True)
+    result = dict(ok=True, browser_errors=errors, layouts=reports, finite_playback=True,
+                  numerical_results_without_webgl=True)
     (args.output / "checks.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2))
 
