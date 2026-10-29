@@ -9,6 +9,7 @@ import webbrowser
 import numpy as np
 
 from .analysis import harmonic_fit, influence_matrix, phase_from_index, solve_correction
+from .counterweights import demo_geometry, plan_two_point_removal
 
 
 def build_demo():
@@ -24,6 +25,7 @@ def build_demo():
     phase = phase_from_index(phase_times, np.arange(len(phase_times)))
     carrier = np.exp(1j * omega * times)
     rng = np.random.default_rng(52840)
+    geometry = demo_geometry()
     noise_std = np.array([0.020, 0.020, 0.0015, 0.0015])
 
     def motion(unbalance):
@@ -56,7 +58,7 @@ def build_demo():
         m = motion(unbalance)
         return dict(planes=planes, motion_real=m.real.tolist(), motion_imag=m.imag.tolist(),
                     accel_rms_mg=(np.abs(fitted.coefficient[:2]) / math.sqrt(2) / 9.80665 * 1000).tolist(),
-                    solver=solved)
+                    solver=solved, removal_plan=plan_two_point_removal(correction, geometry))
 
     scenarios = []
     definitions = [("asymmetric", "Разный дисбаланс A / B", [80 * np.exp(1j * np.deg2rad(35)),
@@ -80,7 +82,7 @@ def build_demo():
                 sample_rate_hz=rate, model_moving_mass_kg=mass, seed=52840,
                 model_note="Illustrative 15 kg model; flywheel/pulley mass and real inertias are unknown.",
                 angle_convention="0 degrees at top, clockwise, both planes viewed from A towards B",
-                channel_units=["m/s2", "m/s2", "rad/s", "rad/s"], scenarios=scenarios)
+                channel_units=["m/s2", "m/s2", "rad/s", "rad/s"], geometry=geometry, scenarios=scenarios)
 
 
 def make_server(port=0):

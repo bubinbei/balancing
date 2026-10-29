@@ -9,7 +9,10 @@
       "scenarios": 3,
       "stages": 2,
       "values_match_python": true,
-      "overflow": false
+      "overflow": false,
+      "counterweights": 8,
+      "removal_plan_matches_python": true,
+      "zero_mark": true
     },
     {
       "width": 1280,
@@ -18,7 +21,10 @@
       "scenarios": 3,
       "stages": 2,
       "values_match_python": true,
-      "overflow": false
+      "overflow": false,
+      "counterweights": 8,
+      "removal_plan_matches_python": true,
+      "zero_mark": true
     },
     {
       "width": 360,
@@ -27,7 +33,10 @@
       "scenarios": 3,
       "stages": 2,
       "values_match_python": true,
-      "overflow": false
+      "overflow": false,
+      "counterweights": 8,
+      "removal_plan_matches_python": true,
+      "zero_mark": true
     },
     {
       "width": 320,
@@ -36,7 +45,10 @@
       "scenarios": 3,
       "stages": 2,
       "values_match_python": true,
-      "overflow": false
+      "overflow": false,
+      "counterweights": 8,
+      "removal_plan_matches_python": true,
+      "zero_mark": true
     }
   ],
   "finite_playback": true

@@ -20,7 +20,7 @@
   </div>
   <div class="layout">
     <section class="model-panel" aria-labelledby="model-title">
-      <div class="panel-head"><h2 id="model-title">Люлька и коленвал</h2><button id="view">Вид с торца</button></div>
+      <div class="panel-head"><h2 id="model-title">Люлька и коленвал</h2><div class="model-actions"><button id="zero">Полоска 0°</button><button id="view">Вид с торца</button></div></div>
       <canvas id="model" role="img" aria-label="3D-модель деревянной люльки на двух подвесах с коленвалом; A и B обозначают концы измерения">3D-модель люльки</canvas>
       <div class="model-footer"><span>Движение ×6000 · показ замедлен</span><button id="play">Показать движение</button></div>
       <div class="legend"><span class="gradient"></span><span id="color-legend">Цвет — ускорение RMS</span></div>
@@ -32,7 +32,23 @@
       <p class="small muted">Сплошная стрелка — тяжёлая сторона. Пунктир — куда добавить массу. Углы: 0° сверху, по часовой стрелке; обе плоскости при взгляде A → B и положении индексной метки 0°.</p>
     </section>
   </div>
-  <section class="comparison" aria-labelledby="comparison-title"><h2 id="comparison-title">Сравнение дисбаланса</h2><div class="table-wrap"><table><thead><tr><th>Плоскость</th><th>До, г·мм</th><th>После, г·мм</th><th>Сейчас на экране</th></tr></thead><tbody id="comparison"></tbody></table></div><p class="small muted">«После» — отдельный синтетический прогон с новыми шумовыми отсчётами после расчётной коррекции. Это не испытание реальной детали.</p></section>
+  <section class="counterweight-panel" aria-labelledby="cw-title">
+    <div class="panel-head"><h2 id="cw-title">Какие противовесы облегчать</h2><span class="badge">УЧЕБНАЯ ГЕОМЕТРИЯ</span></div>
+    <p class="cw-intro">CW1–CW8 считаем от шкива A к маховику B. При полоске 0° сверху: CW3–CW6 — север, CW1–CW2 и CW7–CW8 — юг.</p>
+    <div class="cw-layout"><div>
+      <svg id="counterweight-map" role="img" aria-label="Восемь противовесов: четыре центральных на север, по два крайних на юг; расположение при индексной метке ноль"></svg>
+      <div id="counterweight-buttons" class="cw-buttons" aria-label="Выбрать противовес для подсветки"></div>
+      <p id="counterweight-info" class="small"></p>
+    </div><div class="cw-explanation">
+      <p><strong>Где полоска:</strong> на приводном шкиве, не на люльке. В нулевом положении она сверху, напротив датчика фазы. В демо её направление совпадает с центром CW3–CW6. Кнопка «Полоска 0°» останавливает рисунок в этом положении.</p>
+      <p><strong>Куда убирать:</strong> с тяжёлой стороны; добавлять массу — на 180° напротив. Угол отсчитывается от полоски по часовой стрелке при взгляде A → B. Фаза вибрации превращается в угол коррекции через пробные грузы.</p>
+      <p><strong>A/B — расчётные плоскости, CW — противовесы.</strong> При переносе коррекции на другой CW надо сохранить и суммарный дисбаланс, и его момент вдоль вала. Одного совпадения угла недостаточно.</p>
+    </div></div>
+    <div id="removal-status" role="status"></div>
+    <div class="table-wrap"><table id="removal-table"><thead><tr><th>Противовес</th><th>Снять в модели, г</th><th>Угол от полоски</th><th>Радиус, мм</th></tr></thead><tbody id="removal-actions"></tbody></table></div>
+    <p class="small muted">Крестики на 3D-модели обозначают условные точки снятия. Подсвеченные CW — один вариант коррекции, а не обнаруженные места заводского дефекта. Размеры, радиус 65 мм и секторы ±55° заданы для демо. Без обмера реального коленвала, утверждённых зон обработки и проверки прочности номера CW не являются указанием сверлить. Диаметр и глубина отверстий не рассчитаны.</p>
+  </section>
+  <section class="comparison" aria-labelledby="comparison-title"><h2 id="comparison-title">Сравнение дисбаланса</h2><div class="table-wrap"><table><thead><tr><th>Плоскость</th><th>До, г·мм</th><th>После, г·мм</th><th>Сейчас на экране</th></tr></thead><tbody id="comparison"></tbody></table></div><p class="small muted">«После» — синтетическая коррекция в расчётных плоскостях A/B и отдельный прогон с новыми шумовыми отсчётами. Физическая обработка CW этим сравнением не проверяется.</p></section>
   <details><summary>Что проверяет это демо</summary><p>Python генерирует исходный прогон, две пробы по 100 г·мм и контрольный прогон. Амплитуды/фазы выделяются существующим harmonic_fit; коррекция рассчитывается через influence_matrix и solve_correction. Оценка дисбаланса — вектор, противоположный рассчитанной добавляемой коррекции.</p><p>Приняты условные масса сборки 15 кг и моменты инерции. Масса реального коленвала — 13,05 кг без маховика/шкива; полная масса стенда ещё неизвестна. 3D-движение показано по заданной модели генератора, численные результаты — по анализу сигналов с шумом. Сырые BLC1/USB, монтаж датчиков и физическая калибровка этим экраном не проверяются.</p><p>Постоянное снятие металла по этому демо не выполняется. Достижимая точность реального стенда пока не подтверждена.</p></details>
   <footer id="status" role="status">Подготовка синтетического примера…</footer>
 </main>

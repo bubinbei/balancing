@@ -10,6 +10,7 @@ window.createCradle = function(canvas) {
   const unit=a=>mul(a,1/(Math.hypot(...a)||1)), clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
   const value=(i,t)=>motion.real[i]*Math.cos(t)-motion.imag[i]*Math.sin(t);
   let motion={real:[0,0,0],imag:[0,0,0]}, angle=0,rpm=900,ceiling=1;
+  let geometry=null,selected='CW3',candidates=new Set(),planActions=[];
   let azimuth=-.45,elevation=.25,endView=false,w=600,h=380,dpr=1;
   const colors={}, probe=document.createElement('span');probe.hidden=true;document.body.append(probe);
   function palette(){for(const key of ['bg','surface','ink','muted','line','accent','second','metal','wood','ghost']){probe.style.color=`var(--${key})`;colors[key]=getComputedStyle(probe).color;}}
@@ -54,6 +55,17 @@ window.createCradle = function(canvas) {
     for(let i=0;i<n;i++)face([rings[0][i],rings[0][(i+1)%n],rings[1][(i+1)%n],rings[1][i]],material,mul(add(a,b),.5));
   }
   function rotor(p){const y=p[1],z=p[2]+.1;return [p[0],y*Math.cos(angle)-z*Math.sin(angle),y*Math.sin(angle)+z*Math.cos(angle)-.1];}
+  function counterweight(cw){
+    const x=cw.x_mm/1000,center=cw.center_angle_deg*Math.PI/180,arc=cw.half_arc_deg*Math.PI/180;
+    const outer=Array.from({length:13},(_,i)=>center-arc+2*arc*i/12);
+    const outline=[...outer.map(phi=>[0,-.082*Math.sin(phi),-.1+.082*Math.cos(phi)]),
+      ...outer.slice().reverse().map(phi=>[0,-.024*Math.sin(phi),-.1+.024*Math.cos(phi)])];
+    const sides=[-.008,.008].map(dx=>outline.map(p=>rotor([x+dx,p[1],p[2]])));
+    const material=cw.id===selected?'accent':candidates.has(cw.id)?'second':'ghost';
+    const middle=rotor([x,-.055*Math.sin(center),-.1+.055*Math.cos(center)]);
+    face(sides[0].slice().reverse(),material,middle);face(sides[1],material,middle);
+    for(let j=0;j<outline.length;j++)face([sides[0][j],sides[0][(j+1)%outline.length],sides[1][(j+1)%outline.length],sides[1][j]],material,middle);
+  }
   function scene(){
     objects=[];
     for(const y of [-.15,.15])for(let i=0;i<10;i++)box([-.36+i*.08,y,-.29],[.08,.05,.09],'heat');
@@ -67,16 +79,18 @@ window.createCradle = function(canvas) {
     }
     cylinder([-.46,0,-.1],[.46,0,-.1],.019,'metal');
     for(const [i,x] of [-.225,-.075,.075,.225].entries()){
-      const phi=[0,Math.PI,Math.PI,0][i],y=.06*Math.cos(phi),z=-.1+.06*Math.sin(phi);
+      const phi=[0,Math.PI,Math.PI,0][i],y=-.06*Math.sin(phi),z=-.1+.06*Math.cos(phi);
       cylinder(rotor([x-.025,y,z]),rotor([x+.025,y,z]),.026,'metal');
       for(const xx of [x-.035,x+.035]){
         cylinder(rotor([xx,0,-.1]),rotor([xx,y,z]),.035,'ghost',10);
-        cylinder([xx-.007,0,-.1],[xx+.007,0,-.1],.065,'ghost',16);
       }
     }
+    if(geometry)for(const cw of geometry.counterweights)counterweight(cw);
     cylinder([.46,0,-.1],[.49,0,-.1],.145,'metal',32);
     cylinder([-.49,0,-.1],[-.46,0,-.1],.075,'ghost',24);
-    const mark=rotor([.497,0,.025]);cylinder(add(mark,[-.003,0,0]),add(mark,[.003,0,0]),.009,'second',8);
+    // Wide phase stripe on the A-side pulley face, north at index zero.
+    const stripe=[[-.494,-.010,-.043],[-.494,.010,-.043],[-.494,.010,-.024],[-.494,-.010,-.024]].map(rotor);
+    face(stripe,'second',rotor([-.494,0,-.034]));
   }
   function path(points,project,closed=false){ctx.beginPath();points.forEach((p,i)=>{const q=project(p);if(i)ctx.lineTo(q[0],q[1]);else ctx.moveTo(q[0],q[1]);});if(closed)ctx.closePath();}
   function render(){
@@ -104,13 +118,30 @@ window.createCradle = function(canvas) {
       const q=project(tr([x,0,.07]));ctx.font='600 15px system-ui';ctx.textAlign='center';ctx.fillStyle=colors.ink;
       ctx.fillText(i?'B':'A',clamp(q[0]+(endView?(i?18:-18):0),15,w-15),clamp(q[1],25,h-15));
     }
+    for(const action of planActions){
+      const phi=action.removal_angle_deg*Math.PI/180,r=action.radius_mm/1000;
+      const q=project(tr(rotor([action.x_mm/1000-.009,-r*Math.sin(phi),-.1+r*Math.cos(phi)])));
+      ctx.fillStyle=colors.surface;ctx.strokeStyle=colors.ink;ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(q[0],q[1],5,0,TAU);ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(q[0]-3,q[1]);ctx.lineTo(q[0]+3,q[1]);ctx.moveTo(q[0],q[1]-3);ctx.lineTo(q[0],q[1]+3);ctx.stroke();
+    }
+    function callout(caption,p,dx,dy){
+      const q=project(tr(p));ctx.font='600 12px system-ui';
+      const tw=ctx.measureText(caption).width,tx=clamp(q[0]+dx,tw/2+5,w-tw/2-5),ty=clamp(q[1]+dy,30,h-20);
+      ctx.strokeStyle=colors.second;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(q[0],q[1]);ctx.lineTo(tx,ty+4);ctx.stroke();
+      ctx.fillStyle=colors.surface;ctx.fillRect(tx-tw/2-3,ty-12,tw+6,17);ctx.fillStyle=colors.ink;ctx.textAlign='center';ctx.fillText(caption,tx,ty);
+    }
+    callout('Полоска 0°',rotor([-.494,0,-.024]),-30,-42);
+    const cw=geometry?.counterweights.find(w=>w.id===selected);
+    if(cw){const phi=cw.center_angle_deg*Math.PI/180;callout(cw.id,rotor([cw.x_mm/1000,-.082*Math.sin(phi),-.1+.082*Math.cos(phi)]),25,45);}
   }
   let drag=null;
   canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,a:azimuth,b:elevation};canvas.setPointerCapture(e.pointerId);});
   canvas.addEventListener('pointermove',e=>{if(drag){azimuth=drag.a+(e.clientX-drag.x)*.008;elevation=clamp(drag.b+(e.clientY-drag.y)*.006,-.1,.8);render();}});
   for(const event of ['pointerup','pointercancel'])canvas.addEventListener(event,()=>{drag=null;});
   new ResizeObserver(render).observe(canvas);matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render);
-  return {set(data,newRpm,limit){motion={real:data.motion_real,imag:data.motion_imag};rpm=newRpm;ceiling=Math.max(.001,limit);render();},
+  return {set(data,newRpm,limit,newGeometry){motion={real:data.motion_real,imag:data.motion_imag};rpm=newRpm;ceiling=Math.max(.001,limit);geometry=newGeometry||geometry;planActions=data.removal_plan?.actions||[];candidates=new Set(planActions.map(a=>a.counterweight));render();},
+    select(id){selected=id;render();},
     frame(a){angle=a;render();},toggleView(){endView=!endView;azimuth=endView?-Math.PI/2:-.45;elevation=endView?.08:.25;render();return endView;},
     transform, amplitude};
 };
