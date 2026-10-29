@@ -15,5 +15,8 @@ balancing = "balancing_host.cli:main"
 [tool.setuptools.packages.find]
 where = ["host"]
 
+[tool.setuptools.package-data]
+balancing_host = ["demo_assets/*"]
+
 [tool.uv]
-cache-keys = [{ file = "pyproject.toml" }, { file = "host/balancing_host/*.py" }]
+cache-keys = [{ file = "pyproject.toml" }, { file = "host/balancing_host/*.py" }, { file = "host/balancing_host/demo_assets/*" }]

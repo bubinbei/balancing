@@ -27,7 +27,7 @@ SKIP_PREFIXES = {("data", "runs"), ("evidence", "local"),
 TEXT_SUFFIXES = {"", ".md", ".py", ".json", ".svg", ".xml", ".txt", ".csv",
                  ".toml", ".yaml", ".yml", ".c", ".h", ".cpp", ".hpp",
                  ".rs", ".ini", ".cfg", ".ps1", ".sh", ".cmake", ".dts",
-                 ".overlay", ".conf", ".lock"}
+                 ".overlay", ".conf", ".lock", ".html", ".css", ".js"}
 LINK = re.compile(
     r"!?\[[^\]\n]*\]\(\s*(?:<(?P<angle>[^>\n]+)>|"
     r"(?P<plain>(?:\\.|[^\s)])+))"

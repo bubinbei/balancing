@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "browser_errors": [],
+  "layouts": [
+    {
+      "width": 1280,
+      "scheme": "light",
+      "fixed_string_length_error_m": 2.220446049250313e-16,
+      "scenarios": 3,
+      "stages": 2,
+      "values_match_python": true,
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "scheme": "dark",
+      "fixed_string_length_error_m": 2.220446049250313e-16,
+      "scenarios": 3,
+      "stages": 2,
+      "values_match_python": true,
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "scheme": "light",
+      "fixed_string_length_error_m": 2.220446049250313e-16,
+      "scenarios": 3,
+      "stages": 2,
+      "values_match_python": true,
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "scheme": "dark",
+      "fixed_string_length_error_m": 2.220446049250313e-16,
+      "scenarios": 3,
+      "stages": 2,
+      "values_match_python": true,
+      "overflow": false
+    }
+  ],
+  "finite_playback": true
+}

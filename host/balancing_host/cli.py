@@ -20,6 +20,9 @@ def valid_capture(result):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="BLC1 capture, replay and synthetic verification")
     commands = parser.add_subparsers(dest="command", required=True)
+    demo = commands.add_parser("demo", help="Local synthetic balancing screen; no hardware")
+    demo.add_argument("--port", type=int, choices=range(0, 65536), default=0, metavar="PORT")
+    demo.add_argument("--open", action="store_true", help="Open the demo in the default browser")
     synth = commands.add_parser("simulate", help="Create explicitly synthetic measurements")
     synth.add_argument("--output", type=Path, required=True, help="New directory; existing paths are refused")
     synth.add_argument("--seconds", type=float, default=2)
@@ -47,7 +50,10 @@ def main(argv=None):
     size.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == "simulate":
+        if args.command == "demo":
+            from .demo import serve_demo
+            serve_demo(args.port, args.open)
+        elif args.command == "simulate":
             with Recorder(args.output, "synthetic") as recorder:
                 for data in stream(args.seconds, args.rpm):
                     for _ in recorder.append(data):

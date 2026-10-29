@@ -16,6 +16,8 @@ uv run python -m unittest discover -s tests -v
 
 ## Работа без приборов
 
+Запустить экран дисбаланса с 3D-люлькой, двумя плоскостями и сравнением «до / после»: `uv run balancing demo --open`. Это отдельный synthetic UI без USB/BLC1; методика и ограничения: [DEMO](../docs/DEMO.md).
+
 ```powershell
 uv run balancing simulate --output data/runs/demo --seconds 3 --rpm 600
 uv run balancing inspect data/runs/demo

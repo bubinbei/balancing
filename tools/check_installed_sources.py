@@ -28,8 +28,19 @@ def main():
             mismatches.append(source.name)
     extras = {p.name for p in installed.glob("*.py")} - {p.name for p in files}
     mismatches += sorted(extras)
+    assets = sorted((sources / "demo_assets").glob("*"))
+    asset_digest = hashlib.sha256()
+    for source in assets:
+        data = source.read_bytes()
+        asset_digest.update(source.name.encode("ascii") + b"\0" + data)
+        target = installed / "demo_assets" / source.name
+        if not target.is_file() or target.read_bytes() != data:
+            mismatches.append("demo_assets/" + source.name)
+    asset_extras = {p.name for p in (installed / "demo_assets").glob("*")} - {p.name for p in assets}
+    mismatches += sorted("demo_assets/" + name for name in asset_extras)
     result = dict(ok=not mismatches, checked_files=len(files), mismatches=mismatches,
-                  host_source_sha256=digest.hexdigest())
+                  host_source_sha256=digest.hexdigest(), checked_assets=len(assets),
+                  demo_assets_sha256=asset_digest.hexdigest())
     print(json.dumps(result, indent=2))
     return 1 if mismatches else 0
 

@@ -19,6 +19,8 @@ updated: 2026-10-29
 
 Программой уже можно пользоваться без приборов:
 
+**Открыть демо экрана дисбаланса:** `uv run balancing demo --open` после `uv sync --frozen`. Две плоскости A/B, 3D-люлька, углы и сравнение «до / после» работают на явно синтетических данных. [Запуск и границы проверки](docs/DEMO.md).
+
 ```powershell
 uv sync --frozen
 uv run balancing simulate --output data/runs/demo --seconds 3 --rpm 600
