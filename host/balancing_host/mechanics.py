@@ -20,10 +20,13 @@ def sizing(value):
     tension = mass * g / count
     roll_inertia = value["roll_inertia_about_suspension_kg_m2"]
     h = value["cg_below_suspension_m"]
+    axial_stiffness = count * value["wire_young_modulus_pa"] * area / length
+    vertical_axial_hz = math.sqrt(axial_stiffness / mass) / (2 * math.pi)
     result = dict(data_kind=value["data_kind"], manufacturing_approval=False,
                   assumptions=["rigid cradle", "equal vertical wires and equal upper/lower spacing",
                                "small angles", "balanced static load", "drive/cables/hoses neglected",
                                "roll inertia is about the suspension line, not about the centre of mass",
+                               "isolated mode estimates; coupling and support compliance neglected",
                                "no check of clamps, ceiling, wood joints, bearings, lubrication or guards"],
                   moving_mass_kg=mass,
                   pendulum_hz=math.sqrt(g / length) / (2 * math.pi),
@@ -32,7 +35,9 @@ def sizing(value):
                                    (value["yaw_inertia_kg_m2"] * length)) / (2 * math.pi),
                   roll_hz=math.sqrt(mass * g * h / roll_inertia) / (2 * math.pi),
                   static_tension_per_wire_n=tension, static_wire_stress_mpa=tension / area / 1000000,
-                  axial_wire_stiffness_total_n_m=count * value["wire_young_modulus_pa"] * area / length,
+                  axial_wire_stiffness_total_n_m=axial_stiffness,
+                  vertical_axial_hz=vertical_axial_hz,
+                  vertical_axial_1x_rpm=60 * vertical_axial_hz,
                   speed_cases=[])
     require(isinstance(value.get("rpm_cases"), list) and 1 <= len(value["rpm_cases"]) <= 32, "invalid speed cases")
     unbalance = value["trial_mass_g"] * value["trial_radius_mm"]

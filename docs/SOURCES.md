@@ -36,6 +36,10 @@
 | M06 | [Hilton: bifilar/trifilar suspension](https://www.p-a-hilton.co.uk/products/vibration-hvt/bifilar-trifilar-suspension) | Измерительное применение подвесок |
 | M07 | [US Forest Service: moisture and dimensional changes](https://research.fs.usda.gov/treesearch/7143) | Влажность и стабильность деревянных конструкций |
 | M08 | [PCB Piezotronics: sensor mounting](https://www.pcb.com/resources/technical-information/mounting) | Жёсткость крепления датчика |
+| M09 | [OpenStax: pendulums](https://openstax.org/books/university-physics-volume-1/pages/15-4-pendulums) | Частота маятника и её допущения |
+| M10 | [OpenStax: stress, strain, elastic modulus](https://openstax.org/books/university-physics-volume-1/pages/12-3-stress-strain-and-elastic-modulus) | Вывод осевой жёсткости EA/L; свойства конкретной проволоки измеряются отдельно |
+| M11 | [OpenStax: damped oscillations](https://openstax.org/books/university-physics-volume-1/pages/15-5-damped-oscillations) | Спад огибающей и время затухания |
+| M12 | [Stieber, product catalog, 05/25](https://www.stieberclutch.com/~/media/505E05375ABA49D09273439359632287.ashx) | Drag torque обгонных муфт; не гарантия полного механического разобщения |
 
 ## Обработка
 
