@@ -1,0 +1,16 @@
+{
+  "data_kind": "synthetic",
+  "duration_s": 5.01785650011152,
+  "bytes": 12727408,
+  "sessions": 296,
+  "host_source_sha256": "87b131fbdea0617a1c0fa4f985582beab73c71a512a12b70e3f735333275fa3b",
+  "encoded_bytes_per_second": 2536423.27151387,
+  "target_bytes_per_second": 250000,
+  "throughput_target_met": true,
+  "decoder_high_water": 1052,
+  "decoder_limit": 16384,
+  "raw_sha256": "ba8dc39197e62b48b36aa4105d4b1d7725487d1c8d4aa42dfa8a4420e3a31236",
+  "semantic_issues": 0,
+  "archive": "temporary archive removed after verified replay",
+  "scope": "short host pipeline benchmark, not 30-minute/90-minute device acceptance"
+}

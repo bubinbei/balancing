@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.20)
+project(balancing_portable_core LANGUAGES C)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# Native verification only: no board image, SDK, flashing target or GPIO map.
+add_library(balancing_core core/blc_core.c)
+target_include_directories(balancing_core PUBLIC core)
+if(MSVC)
+  target_compile_options(balancing_core PRIVATE /W4 /WX)
+else()
+  target_compile_options(balancing_core PRIVATE -Wall -Wextra -Werror)
+endif()
+add_executable(test_core tests/test_core.c)
+target_link_libraries(test_core PRIVATE balancing_core)
+enable_testing()
+add_test(NAME portable_core COMMAND test_core)

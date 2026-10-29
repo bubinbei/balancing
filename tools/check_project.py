@@ -106,7 +106,7 @@ def source_files(root: Path, result: Result):
         for name in sorted(dirs):
             path = parent / name
             parts = path.relative_to(root).parts
-            if name in SKIP_DIRS or ignored(parts):
+            if name in SKIP_DIRS or name.endswith(".egg-info") or ignored(parts):
                 continue
             if path.is_symlink():
                 result.error(path.relative_to(root).as_posix(), "source symlink is unsupported")

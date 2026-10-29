@@ -1,0 +1,15 @@
+{
+  "data_kind": "synthetic",
+  "duration_s": 5.030018900055438,
+  "bytes": 12598414,
+  "sessions": 293,
+  "encoded_bytes_per_second": 2504645.459654465,
+  "target_bytes_per_second": 250000,
+  "throughput_target_met": true,
+  "decoder_high_water": 1052,
+  "decoder_limit": 16384,
+  "raw_sha256": "3aafde52db7e246e049a8ef7d818558694ffe5262e8e14206fedd15af5407f51",
+  "semantic_issues": 0,
+  "archive": "temporary archive removed after verified replay",
+  "scope": "short host pipeline benchmark, not 30-minute/90-minute device acceptance"
+}

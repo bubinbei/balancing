@@ -1,0 +1,34 @@
+{
+  "data_kind": "synthetic",
+  "seed": 20261029,
+  "amplitude_relative_error": 2.220446049250313e-16,
+  "phase_error_deg": 3.3218854260427224e-13,
+  "correction_relative_error": 8.672685422203514e-16,
+  "conditional_95_interval_coverage": 0.96,
+  "coverage_trials": 250,
+  "coverage_scope": "Gaussian observation noise; H known exactly; excludes calibration and systematic error",
+  "transients": [
+    {
+      "initial_omega_rad_s": 30.0,
+      "alpha_rad_s2": 8.0,
+      "phase_error_p95_deg": 0.0018517756101216394,
+      "timer_quantization_us": 1,
+      "kinematics_window_s": 0.1,
+      "omega_error_p95_rad_s": 0.0003811764351027587,
+      "alpha_error_p95_rad_s2": 0.012840243259418033
+    },
+    {
+      "initial_omega_rad_s": 100.0,
+      "alpha_rad_s2": -8.0,
+      "phase_error_p95_deg": 0.002053957426875802,
+      "timer_quantization_us": 1,
+      "kinematics_window_s": 0.1,
+      "omega_error_p95_rad_s": 0.00042343122406149895,
+      "alpha_error_p95_rad_s2": 0.01309538764058793
+    }
+  ],
+  "rigid_3d_max_acceleration_error_m_s2": 9.360360542221002e-09,
+  "rigid_scope": "known synthetic orientation and angular derivatives; no orientation estimator acceptance",
+  "physical_accuracy_confirmed": false,
+  "checks_passed": true
+}

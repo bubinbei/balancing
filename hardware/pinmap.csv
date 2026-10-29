@@ -1,0 +1,14 @@
+signal,board_pad,nrf_gpio,direction,logic_voltage_v,status,verification
+SPI_SCK,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+SPI_MOSI,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+SPI_MISO,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+CS_BMI_A,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+CS_LIS_A,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+CS_BMI_B,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+CS_LIS_B,unknown,unknown,output,3.3,unverified,schematic_and_board_required
+DRDY_BMI_A,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+DRDY_LIS_A,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+DRDY_BMI_B,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+DRDY_LIS_B,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+PHASE_TOOTH,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+PHASE_INDEX,unknown,unknown,input,3.3,unverified,schematic_and_board_required

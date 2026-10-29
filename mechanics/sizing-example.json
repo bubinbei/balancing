@@ -1,0 +1,15 @@
+{
+  "data_kind": "model_example",
+  "moving_mass_kg": 30,
+  "suspensions": 2,
+  "suspension_length_m": 0.8,
+  "half_span_m": 0.25,
+  "yaw_inertia_kg_m2": 3,
+  "roll_inertia_about_suspension_kg_m2": 0.5,
+  "cg_below_suspension_m": 0.08,
+  "wire_diameter_mm": 1.5,
+  "wire_young_modulus_pa": 200000000000,
+  "trial_mass_g": 1,
+  "trial_radius_mm": 100,
+  "rpm_cases": [400, 600, 1000, 3000]
+}

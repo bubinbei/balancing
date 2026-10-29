@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "balancing-host"
+version = "0.1.0"
+description = "Raw acquisition and reproducible analysis for an experimental balancing stand"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2,<3", "scipy>=1.14,<2", "pyserial>=3.5,<4"]
+
+[project.scripts]
+balancing = "balancing_host.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["host"]
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { file = "host/balancing_host/*.py" }]
