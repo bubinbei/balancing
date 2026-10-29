@@ -1,6 +1,6 @@
 ---
 id: G12
-status: planned
+status: in_progress
 depends_on: [G10, G11]
 ---
 

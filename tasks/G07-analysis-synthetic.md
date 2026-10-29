@@ -1,6 +1,6 @@
 ---
 id: G07
-status: planned
+status: in_progress
 depends_on: [G02]
 ---
 

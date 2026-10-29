@@ -1,6 +1,6 @@
 ---
 id: G06
-status: planned
+status: blocked
 depends_on: [G00]
 ---
 
