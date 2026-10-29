@@ -145,6 +145,18 @@ class RecordingTests(unittest.TestCase):
                 events = [e for raw in stream(0.01) for e in recorder.append(raw)]
             self.assertTrue(all(not e["eligible"] for e in events))
 
+    def test_reset_after_data_preserves_missing_previous_end(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / "reset"
+            first = list(stream(0.01))[:-1]
+            second = list(stream(0.01, uuid="ffeeddccbbaa99887766554433221100"))
+            with Recorder(directory, "synthetic") as recorder:
+                events = [e for packet in first + second for e in recorder.append(packet)]
+            self.assertTrue(any(i["code"] == "previous_session_incomplete" for e in events for i in e["issues"]))
+            result = inspect_recording(directory / "raw.blc")
+            self.assertGreater(result["semantic_issues"], 0)
+            self.assertTrue(result["session"]["had_gaps"])
+
 
 class CommandTests(unittest.TestCase):
     def client(self):

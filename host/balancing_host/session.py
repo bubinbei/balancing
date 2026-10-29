@@ -84,6 +84,9 @@ class Session:
                      issues=issues)
         if frame.kind == Type.HELLO:
             if value["session_uuid"] != self.uuid:
+                interrupted = self.uuid is not None and self.last_data is not None and not self.ended
+                if interrupted:
+                    issues.append({"code": "previous_session_incomplete", "previous_uuid": self.uuid})
                 self.uuid, self.simulated = value["session_uuid"], value["simulated"]
                 self.config = self.config_key = None
                 self.assembly.clear()
@@ -91,6 +94,7 @@ class Session:
                 self.last_totals.clear()
                 self.last_frame = self.last_data = None
                 self.ended = self.had_gaps = False
+                self.had_gaps = interrupted
                 self.end_orderly = False
                 issues.append({"code": "session_started"})
             self.hello = value
