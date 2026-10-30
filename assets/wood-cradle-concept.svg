@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
-  <title id="title">Открытая деревянная люлька и крепление роликов 608</title>
-  <desc id="desc">Предварительная схема: пояс из доски 20 на 120, угловые бруски и фанерные косынки; пара роликов под шейку 48 мм; зажим только внутреннего кольца. Не размерный чертёж.</desc>
+  <title id="title">Подшипники на внутренних торцевых досках люльки</title>
+  <desc id="desc">Предварительная схема: четыре ролика через металлические накладки закреплены на внутренних сторонах торцевых досок. Показаны опорные оси, сквозное крепление и путь нагрузки; наружные кольца вращаются. Не размерный чертёж.</desc>
   <defs>
     <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8" fill="none" stroke="#34495e" stroke-width="1.4"/></marker>
     <style>
       text{font-family:Arial,DejaVu Sans,sans-serif;fill:#1e3448;font-size:21px}
-      .h{font-size:27px;font-weight:700}.small{font-size:18px}.tiny{font-size:17px}
+      .h{font-size:27px;font-weight:700}.small{font-size:18px}.tiny{font-size:17px}.title{font-size:29px;font-weight:700}
       .dim{stroke:#34495e;stroke-width:1.6;fill:none;marker-start:url(#arr);marker-end:url(#arr)}
       .lead{stroke:#52697a;stroke-width:1.6;fill:none}.axis{stroke:#708898;stroke-width:1.5;stroke-dasharray:10 7}
       .wood{fill:#ead0a7;stroke:#866644;stroke-width:2}.block{fill:#ba8c56;stroke:#755230;stroke-width:2}
@@ -15,14 +15,14 @@
     </style>
   </defs>
   <rect width="1600" height="1100" fill="#f0f4f7"/>
-  <text x="40" y="46" font-size="32" font-weight="700">Люлька из доски 20×120 мм: конструкция узлов</text>
-  <text x="40" y="78" class="small">Предварительная схема • размеры L/W и крепёж ещё не назначены • вращение не разрешено</text>
+  <text x="40" y="46" class="title">Люлька: подшипники закреплены на внутренних торцевых досках</text>
+  <text x="40" y="78" class="small">Исправленная компоновка • накладки связаны с досками • габарит щёк и размеры крепежа ещё проверяются</text>
   <rect x="24" y="100" width="780" height="445" rx="14" class="panel"/>
   <rect x="824" y="100" width="752" height="445" rx="14" class="panel"/>
   <rect x="24" y="565" width="650" height="505" rx="14" class="panel"/>
   <rect x="694" y="565" width="882" height="505" rx="14" class="panel"/>
 
-  <text x="45" y="138" class="h">А. Пояс, вид сверху</text>
+  <text x="45" y="138" class="h">А. По два ролика на каждом торце, вид сверху</text>
   <rect x="65" y="205" width="690" height="25" class="wood"/>
   <rect x="65" y="435" width="690" height="25" class="wood"/>
   <rect x="65" y="230" width="25" height="205" class="wood"/>
@@ -31,39 +31,53 @@
   <rect x="686" y="230" width="44" height="44" class="block"/>
   <rect x="90" y="391" width="44" height="44" class="block"/>
   <rect x="686" y="391" width="44" height="44" class="block"/>
-  <path d="M65 205H198L65 338Z M755 205H622L755 338Z M65 460H198L65 327Z M755 460H622L755 327Z" class="ply"/>
-  <path d="M224 245V420 M596 245V420" stroke="#a1b3c0" stroke-width="20"/>
-  <path d="M224 245V420 M596 245V420" stroke="#52697a" stroke-width="2" stroke-dasharray="5 5"/>
-  <rect x="217" y="284" width="14" height="30" class="bearing"/>
-  <rect x="217" y="351" width="14" height="30" class="bearing"/>
-  <rect x="589" y="284" width="14" height="30" class="bearing"/>
-  <rect x="589" y="351" width="14" height="30" class="bearing"/>
+  <path d="M65 205H160L65 300Z M755 205H660L755 300Z M65 460H160L65 365Z M755 460H660L755 365Z" class="ply"/>
+  <rect x="90" y="278" width="8" height="108" class="metal"/>
+  <rect x="722" y="278" width="8" height="108" class="metal"/>
+  <path d="M98 299H132 M98 366H132 M686 299H722 M686 366H722" stroke="#52697a" stroke-width="5"/>
+  <rect x="104" y="291" width="9" height="16" class="sleeve"/>
+  <rect x="104" y="358" width="9" height="16" class="sleeve"/>
+  <rect x="707" y="291" width="9" height="16" class="sleeve"/>
+  <rect x="707" y="358" width="9" height="16" class="sleeve"/>
+  <rect x="113" y="284" width="14" height="30" class="bearing"/>
+  <rect x="113" y="351" width="14" height="30" class="bearing"/>
+  <rect x="693" y="284" width="14" height="30" class="bearing"/>
+  <rect x="693" y="351" width="14" height="30" class="bearing"/>
   <path d="M42 332H778" class="axis"/>
   <text x="308" y="319">Ось коленвала</text>
-  <path d="M224 188V158 M596 188V158" class="lead"/>
-  <path d="M224 171H596" class="dim"/>
-  <text x="295" y="164" class="small">353 мм между опорами*</text>
+  <path d="M120 188V158 M700 188V158" class="lead"/>
+  <path d="M120 171H700" class="dim"/>
+  <text x="295" y="164" class="small">353 мм между серединами роликов*</text>
   <text x="65" y="492" class="small">Зелёное — косынки; коричневое — угловые бруски.</text>
-  <text x="65" y="520" class="tiny">Металлические поперечины располагаются ниже габарита вращения.</text>
+  <text x="65" y="520" class="tiny">Серое — накладки у досок и оси. Синие ролики выступают внутрь пояса.</text>
 
-  <text x="845" y="138" class="h">Б. Пара роликов, вид вдоль вала</text>
+  <text x="845" y="138" class="h">Б. Внутренняя сторона торцевой доски</text>
+  <text x="855" y="179" class="small">Оси подняты над кромкой на прилегающих накладках.</text>
+  <rect x="930" y="359.25" width="520" height="63" class="wood"/>
+  <path d="M1098 320H1133.5L1145 382V418H1086V382Z" class="metal"/>
+  <path d="M1246.5 320H1282L1294 382V418H1234V382Z" class="metal"/>
+  <circle cx="1115.75" cy="390" r="5" fill="#52697a"/>
+  <circle cx="1115.75" cy="410" r="5" fill="#52697a"/>
+  <circle cx="1264.25" cy="390" r="5" fill="#52697a"/>
+  <circle cx="1264.25" cy="410" r="5" fill="#52697a"/>
+  <text x="1310" y="400" class="tiny">Доска 20 мм</text>
   <circle cx="1190" cy="270" r="72" fill="#d7e8f2" stroke="#2a729e" stroke-width="3"/>
   <circle cx="1115.75" cy="344.25" r="33" class="bearing"/>
   <circle cx="1264.25" cy="344.25" r="33" class="bearing"/>
   <circle cx="1115.75" cy="344.25" r="12" fill="#fff" stroke="#52697a" stroke-width="2"/>
   <circle cx="1264.25" cy="344.25" r="12" fill="#fff" stroke="#52697a" stroke-width="2"/>
-  <path d="M1190 164V395 M1050 344.25H1335" class="axis"/>
+  <path d="M1190 194V425 M1050 344.25H1335" class="axis"/>
   <path d="M1190 270L1115.75 344.25 M1190 270L1264.25 344.25" class="lead"/>
   <text x="1140" y="277">Ø48</text>
   <text x="1340" y="350">608: Ø22</text>
-  <path d="M1115.75 385V425 M1264.25 385V425" class="lead"/>
-  <path d="M1115.75 410H1264.25" class="dim"/>
-  <text x="1150" y="438" class="small">49,50 мм</text>
+  <path d="M1115.75 428V459 M1264.25 428V459" class="lead"/>
+  <path d="M1115.75 450H1264.25" class="dim"/>
+  <text x="1150" y="479" class="small">49,50 мм</text>
   <path d="M1025 270H1100 M1025 344.25H1060" class="lead"/>
   <path d="M1038 270V344.25" class="dim"/>
   <text x="900" y="308" class="small">24,75 мм</text>
-  <text x="855" y="481" class="small">Расчёт при нормалях контакта 45° от вертикали.</text>
-  <text x="855" y="515" class="small">Четыре ролика = две такие группы; оси параллельны валу.</text>
+  <text x="855" y="508" class="small">Контакт 45°; высота над кромкой и зазоры ещё не назначены.</text>
+  <text x="855" y="535" class="tiny">Накладки и вся доска должны проходить мимо щёк на полном обороте.</text>
 
   <text x="45" y="605" class="h">В. Угол пояса: стык + усиление</text>
   <path d="M90 675H460V711H126V935H90Z" class="wood"/>
@@ -80,31 +94,40 @@
   <text x="60" y="995" class="small">Фанера 10–12 мм; катеты около 100–120 мм*.</text>
   <text x="60" y="1030" class="tiny">Клей + прижим; взаимное расположение шурупов проверить.</text>
 
-  <text x="715" y="605" class="h">Г. Зажим 608: разрез вдоль неподвижной оси</text>
-  <text x="715" y="639" class="small">Принцип пакета, не размерная вилка. Крепёж в 22 мм ещё разместить.</text>
-  <rect x="824" y="700" width="24" height="174" class="metal"/>
-  <rect x="1192" y="700" width="24" height="174" class="metal"/>
-  <rect x="848" y="766" width="80" height="42" class="sleeve"/>
-  <rect x="1112" y="766" width="80" height="42" class="sleeve"/>
-  <rect x="928" y="708" width="184" height="25" class="bearing"/>
-  <rect x="928" y="841" width="184" height="25" class="bearing"/>
-  <rect x="928" y="733" width="184" height="33" fill="#eaf3f8" stroke="#9ebfce" stroke-width="1"/>
-  <rect x="928" y="808" width="184" height="33" fill="#eaf3f8" stroke="#9ebfce" stroke-width="1"/>
-  <rect x="928" y="766" width="184" height="42" fill="#7a96a8" stroke="#52697a" stroke-width="2"/>
-  <rect x="780" y="778" width="490" height="18" fill="#dbe2e8" stroke="#52697a" stroke-width="2"/>
-  <path d="M750 787H1320" class="axis"/>
-  <path d="M928 690V669 M1112 690V669" class="lead"/>
-  <path d="M928 680H1112" class="dim"/>
-  <text x="980" y="673" class="small">7 мм</text>
-  <path d="M1052 712L1275 688H1500" class="lead"/>
-  <text x="1282" y="722" class="small">Наружное кольцо</text>
-  <text x="1282" y="747" class="small">вращается свободно</text>
-  <path d="M1045 807L1280 859H1500" class="lead"/>
-  <text x="1282" y="890" class="small">Зажато только</text>
-  <text x="1282" y="916" class="small">внутреннее кольцо</text>
-  <path d="M880 808V903H1080 M1152 808V903" class="lead"/>
-  <text x="765" y="938" class="small">Оранжевое — две торцевые дистанционные втулки.</text>
-  <text x="765" y="969" class="small">Гладкая ось Ø8; втулки не касаются уплотнений.</text>
-  <text x="765" y="1000" class="small">Ось, проставки и опоры — металл; резьба не служит посадкой.</text>
-  <text x="765" y="1033" class="tiny">* Номиналы усилений предварительны. Галтели и габарит противовесов неизвестны.</text>
+  <text x="715" y="605" class="h">Г. Ось на накладке у доски, разрез вдоль вала</text>
+  <text x="715" y="639" class="small">Слева наружная сторона люльки; справа — внутренняя.</text>
+  <rect x="800" y="800" width="130" height="170" class="wood"/>
+  <rect x="780" y="817" width="20" height="137" class="metal"/>
+  <rect x="930" y="697" width="24" height="273" class="metal"/>
+  <path d="M762 847H974 M762 924H974" stroke="#52697a" stroke-width="10"/>
+  <rect x="754" y="832" width="13" height="30" class="metal"/>
+  <rect x="754" y="909" width="13" height="30" class="metal"/>
+  <rect x="974" y="832" width="13" height="30" class="metal"/>
+  <rect x="974" y="909" width="13" height="30" class="metal"/>
+  <rect x="954" y="746" width="66" height="38" class="sleeve"/>
+  <rect x="1132" y="746" width="66" height="38" class="sleeve"/>
+  <rect x="1020" y="696" width="112" height="23" class="bearing"/>
+  <rect x="1020" y="811" width="112" height="23" class="bearing"/>
+  <rect x="1020" y="719" width="112" height="27" fill="#eaf3f8" stroke="#9ebfce" stroke-width="1"/>
+  <rect x="1020" y="784" width="112" height="27" fill="#eaf3f8" stroke="#9ebfce" stroke-width="1"/>
+  <rect x="1020" y="746" width="112" height="38" fill="#7a96a8" stroke="#52697a" stroke-width="2"/>
+  <rect x="906" y="757" width="326" height="16" fill="#dbe2e8" stroke="#52697a" stroke-width="2"/>
+  <rect x="906" y="740" width="15" height="50" class="metal"/>
+  <rect x="1198" y="745" width="24" height="40" class="metal"/>
+  <path d="M880 765H1260" class="axis"/>
+  <text x="811" y="890" class="small">Доска</text>
+  <text x="811" y="915" class="small">20 мм</text>
+  <path d="M1020 689V666 M1132 689V666" class="lead"/>
+  <path d="M1020 679H1132" class="dim"/>
+  <text x="1048" y="672" class="small">7 мм</text>
+  <path d="M1080 700L1270 691H1515" class="lead"/>
+  <text x="1277" y="720" class="small">Наружное кольцо</text>
+  <text x="1277" y="745" class="small">свободно вращается</text>
+  <path d="M1082 784L1270 817H1515" class="lead"/>
+  <text x="1277" y="847" class="small">Зажим только</text>
+  <text x="1277" y="872" class="small">внутреннего кольца</text>
+  <path d="M942 924L1138 930H1500" class="lead"/>
+  <text x="1115" y="959" class="small">Накладка притянута к доске</text>
+  <text x="715" y="1000" class="small">Оранжевое — проставки; ось Ø8 опирается на металл.</text>
+  <text x="715" y="1033" class="tiny">Схема крепления: вылет, толщина накладки и прижим уточняются по зазорам/нагрузке.</text>
 </svg>
