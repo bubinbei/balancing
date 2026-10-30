@@ -59,3 +59,14 @@
 | ID | Источник | Что проверено |
 |---|---|---|
 | T01 | [uv: caching and cache-keys](https://docs.astral.sh/uv/concepts/cache/) | Ключи локальных исходников для обновления non-editable wheel; установленный пакет дополнительно сравнивается с проектом побайтно |
+
+## Отводимый привод — дополнение 2026-10-30
+
+| ID | Источник | Что подтверждает |
+|---|---|---|
+| R01 | [Pololu: RC servo electrical interface](https://www.pololu.com/blog/16/electrical-characteristics-of-servos-and-introduction-to-the-servo-control-interface) | Команда положения импульсами, питание и общий провод сервопривода |
+| R02 | [Pololu: DRV8874 carrier](https://www.pololu.com/product/4035) | Режимы drive/brake/coast, входы и ограничения конкретной платы; не автоматическое одобрение любого аналога |
+| R03 | [NiceNano documentation](https://nicekeyboards.com/docs/nice-nano/) | 21 GPIO оригинального изделия; не доказательство разводки клона |
+| R04 | [NXP: PCA9685](https://www.nxp.com/docs/en/data-sheet/PCA9685.pdf) | I²C PWM, общий генератор частоты, OE и состояния выходов; кандидат управления серво, не силовой драйвер двигателя |
+
+Сообщение о заказе JGB37-520 и цветовая схема/таблица продавца предоставлены владельцем в разговоре. Это исходные сведения для проверки экземпляра, не результаты измерений и не независимый паспорт производителя.
