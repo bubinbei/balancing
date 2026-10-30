@@ -12,3 +12,13 @@ DRDY_BMI_B,unknown,unknown,input,3.3,unverified,schematic_and_board_required
 DRDY_LIS_B,unknown,unknown,input,3.3,unverified,schematic_and_board_required
 PHASE_TOOTH,unknown,unknown,input,3.3,unverified,schematic_and_board_required
 PHASE_INDEX,unknown,unknown,input,3.3,unverified,schematic_and_board_required
+MOTOR_ENCODER_A,unknown,unknown,input,3.3,unverified,encoder_levels_and_board_required
+MOTOR_ENCODER_B,unknown,unknown,input,3.3,unverified,encoder_levels_and_board_required
+MOTOR_PWM,unknown,unknown,output,3.3,unverified,driver_mode_and_separate_pwm_period_required
+MOTOR_ENABLE,unknown,unknown,output,3.3,unverified,driver_boot_disable_and_board_required
+MOTOR_CURRENT_ADC,unknown,unknown,input,3.3,unverified,ain_and_input_scaling_required
+SERVO_PWM,unknown,unknown,output,3.3,unverified,rds3115_separate_pwm_period_and_board_required
+I2C_SCL,unknown,unknown,bidirectional,3.3,unverified,oled_mcp23017_and_board_required
+I2C_SDA,unknown,unknown,bidirectional,3.3,unverified,oled_mcp23017_and_board_required
+MOTOR_FAULT,external_GPA0,not_direct,input,3.3,unverified,candidate_mcp23017_input_no_direct_gpio
+RETRACT_CONFIRMED,external_GPA1,not_direct,input,3.3,unverified,candidate_mcp23017_input_no_direct_gpio
